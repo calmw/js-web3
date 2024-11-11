@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+    <script src="js/web3.js"></script>
+</head>
+<body>
+<button id="bet">Bet</button>
+</body>
+</html>
+<script>
+    let accountCurrent = null;
+    let ABI = null
+
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+    }
+
+    $(async function () {
+        requestAccounts = await ethereum.request({method: 'eth_requestAccounts'});
+        accountCurrent = requestAccounts[0];
+        console.log(accountCurrent)
+
+        $.getJSON("./abi/abi.json", function (data) {
+            console.log(data);
+            ABI = data
+        })
+
+        $("#bet").click(async function () {
+            contract = new web3.eth.Contract(ABI, "0x9a257E68FBfc750Ce4848E73f374D22a1Dc5e16b");
+            await contract.methods
+                .bet(
+                    11,
+                    1,
+                    10,
+                    '0x13f12fa0a0deab29ef44a6e34120060f652686c5b866576eab8914a365823c79',
+                    1
+                ).send({
+                    "from": accountCurrent,
+                    "value": 0
+                });
+        });
+    })
+
+</script>
