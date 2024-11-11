@@ -22,13 +22,14 @@
         window.web3 = new Web3(ethereum);
     }
 
-    addArbIfNotExist()
+    addArbIfNotExist();
 
     window.ethereum.on('accountsChanged', async (accounts) => {
         if (accounts[0] !== accountCurrent) {
             accountCurrent = accounts[0];
         }
     });
+
 
     $(async function () {
         requestAccounts = await ethereum.request({method: 'eth_requestAccounts'});
@@ -41,7 +42,21 @@
         })
 
         $("#bet").click(async function () {
-            console.log(accountCurrent)
+            console.log("当前账户:",accountCurrent)
+
+            balanceEth = 0
+            web3.eth.getBalance(accountCurrent)
+                .then(balance => {
+                    balanceEth = web3.utils.fromWei(balance, 'ether')
+                })
+                .catch(error => {
+                    console.error('错误:', error);
+                });
+            if (balanceEth <= 0) {
+                alert("ETH余额为0")
+                return
+            }
+
             contract = new web3.eth.Contract(ABI, "0x9a257E68FBfc750Ce4848E73f374D22a1Dc5e16b");
             await contract.methods
                 .bet(
