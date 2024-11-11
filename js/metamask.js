@@ -1,5 +1,5 @@
 // 检查网络
-async function checkChain() {
+async function addArbIfNotExist() {
     const {ethereum} = window;
     // 判断链对不，链不对就请求切换网络，或者添加网络，
     if (ethereum) {

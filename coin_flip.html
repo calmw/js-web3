@@ -22,13 +22,14 @@
         window.web3 = new Web3(ethereum);
     }
 
-    checkChain()
+    addArbIfNotExist()
 
     window.ethereum.on('accountsChanged', async (accounts) => {
         if (accounts[0] !== accountCurrent) {
             accountCurrent = accounts[0];
         }
     });
+
     $(async function () {
         requestAccounts = await ethereum.request({method: 'eth_requestAccounts'});
         accountCurrent = requestAccounts[0];
